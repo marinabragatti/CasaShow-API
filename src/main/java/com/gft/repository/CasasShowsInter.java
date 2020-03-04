@@ -6,4 +6,5 @@ import com.gft.model.Casa;
 
 public interface CasasShowsInter extends JpaRepository<Casa, Long> {
 
+	Casa findByNomeCasa(String nomeCasa);
 }

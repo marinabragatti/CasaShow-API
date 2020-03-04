@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 public class Casa {
 	
@@ -21,10 +25,12 @@ public class Casa {
 	@NotEmpty(message = "Nome da Casa de Show inválido")
 	private String nomeCasa;
 	
+	@JsonInclude(Include.NON_NULL)
 	@NotEmpty(message = "Endereço da Casa de Show inválido")
 	private String endereco;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "casaShow")
+	@JsonIgnore
 	private List<Evento> eventos = new ArrayList<Evento>();
 	
 	

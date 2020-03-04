@@ -1,8 +1,10 @@
 package com.gft.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gft.model.Casa;
@@ -11,6 +13,7 @@ import com.gft.repository.CasasShowsInter;
 @Service
 public class CasasService {
 
+	@Autowired
 	private CasasShowsInter casaShowInter;
 	
 	public List<Casa> listar(){
@@ -25,7 +28,7 @@ public class CasasService {
 	public Casa buscar(Long codigo) throws Exception {
 		Casa casa = casaShowInter.findById(codigo).get();
 		if(casa == null) {
-			throw new Exception("Casa não encontrado.");
+			throw new Exception("Casa não encontrada.");
 		}
 		return casa;
 	}
@@ -38,13 +41,20 @@ public class CasasService {
 	public void deletar(Long codigo) throws Exception {
 		try {
 			casaShowInter.deleteById(codigo);
-		} catch (EmptyResultDataAccessException e){
+		} catch (NoSuchElementException e){
 			throw new Exception("Casa não encontrada.");
 		}
 	}
 
-//	public List<Casa> listarCrescente(){
-//		casaShowInter.findAllById()
-//		
-//	}
+	public List<Casa> listarCrescente(){
+		return casaShowInter.findAll(Sort.by(Sort.Direction.ASC, "nomeCasa"));
+	}
+	
+	public List<Casa> listarDecrescente(){
+		return casaShowInter.findAll(Sort.by(Sort.Direction.DESC, "nomeCasa"));
+	}
+	
+	public Casa pesquisar(String nomeCasa){
+		return casaShowInter.findByNomeCasa(nomeCasa);
+	}
 }

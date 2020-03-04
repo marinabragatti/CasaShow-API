@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.gft.model.Evento;
@@ -19,6 +20,11 @@ public class EventosService {
 		return eventosInter.findAll();
 	}
 	
+	public Evento salvar(Evento evento) {
+		evento.setCodigo(null);
+		return eventosInter.save(evento);
+	}
+	
 	public Evento buscar(Long id) throws Exception {
 		Evento evento = eventosInter.findById(id).get();
 		if(evento == null) {
@@ -27,9 +33,9 @@ public class EventosService {
 		return evento;
 	}
 	
-	public Evento salvar(Evento evento) {
-		evento.setCodigo(null);
-		return eventosInter.save(evento);
+	public void atualizar(Evento evento) throws Exception {
+		buscar(evento.getCodigo());
+		eventosInter.save(evento);
 	}
 	
 	public void deletar(Long codigo) throws Exception {
@@ -40,8 +46,27 @@ public class EventosService {
 		}
 	}
 	
-	public void atualizar(Evento evento) throws Exception {
-		buscar(evento.getCodigo());
-		eventosInter.save(evento);
+	public List<Evento> listarCapCrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.ASC, "capacidade"));
+	}
+	
+	public List<Evento> listarCapDecrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.DESC, "capacidade"));
+	}
+	
+	public List<Evento> listarNomeCrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.ASC, "nomeEvento"));
+	}
+	
+	public List<Evento> listarNomeDecrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.DESC, "nomeEvento"));
+	}
+	
+	public List<Evento> listarValorCrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.ASC, "valorIngresso"));
+	}
+	
+	public List<Evento> listarValorDecrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.DESC, "valorIngresso"));
 	}
 }

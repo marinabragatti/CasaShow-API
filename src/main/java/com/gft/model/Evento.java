@@ -3,13 +3,13 @@ package com.gft.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,9 +21,14 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
 public class Evento {
 
+	@JsonInclude(Include.NON_NULL)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
@@ -31,22 +36,28 @@ public class Evento {
 	@NotEmpty(message = "Nome do Evento inválido")
 	private String nomeEvento;
 	
+	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Valores inválidos")
 	@NumberFormat(pattern = "#,##0")
 	@Min(value = 0L, message = "A capacidade deve ser positiva")
 	private int capacidade;
 	
+	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Data inválida")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date dataEvento;
 	
+	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Valor do ingresso inválido")
 	@NumberFormat(pattern = "#,##0.00")
 	@DecimalMin(value = "0.01", message = "O valor não pode ser menor que R$0,01")
 	private BigDecimal valorIngresso;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JsonInclude(Include.NON_NULL)
+	@ManyToOne
+	@JoinColumn(name = "casa_show_codigo")
 	private Casa casaShow;
 	
 	@Enumerated(EnumType.STRING)

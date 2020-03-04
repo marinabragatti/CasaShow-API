@@ -61,4 +61,34 @@ public class EventoResource {
 		eventosService.deletar(codigo);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@GetMapping("/capacidade/asc")
+	public ResponseEntity<List<Evento>> listarCapCrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarCapCrescente());
+	}
+	
+	@GetMapping("/capacidade/desc")
+	public ResponseEntity<List<Evento>> listarCapDecrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarCapDecrescente());
+	}
+	
+	@GetMapping("/nome/asc")
+	public ResponseEntity<List<Evento>> listarNomeCrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarNomeCrescente());
+	}
+	
+	@GetMapping("/nome/desc")
+	public ResponseEntity<List<Evento>> listarNomeDecrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarNomeDecrescente());
+	}
+	
+	@GetMapping("/preco/asc")
+	public ResponseEntity<List<Evento>> listarValorCrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarValorCrescente());
+	}
+	
+	@GetMapping("/preco/desc")
+	public ResponseEntity<List<Evento>> listarValorDecrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarValorDecrescente());
+	}
 }

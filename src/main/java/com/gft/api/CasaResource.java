@@ -62,7 +62,18 @@ public class CasaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@GetMapping("/asc")
+	public ResponseEntity<List<Casa>> listarCrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarCrescente());
+	}
 	
+	@GetMapping("/desc")
+	public ResponseEntity<List<Casa>> listarDecrescente(){
+		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarDecrescente());
+	}
 	
-	
+	@GetMapping("/nome/{nomeCasa}")
+	public ResponseEntity<Casa> pesquisa(@PathVariable ("nomeCasa") String nomeCasa){
+		return ResponseEntity.status(HttpStatus.OK).body(casasService.pesquisar(nomeCasa));
+	}
 }
