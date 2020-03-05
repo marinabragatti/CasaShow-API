@@ -1,9 +1,9 @@
 package com.gft.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class EventosService {
 	public void deletar(Long codigo) throws Exception {
 		try {
 			eventosInter.deleteById(codigo);
-		} catch (EmptyResultDataAccessException e){
+		} catch (NoSuchElementException e){
 			throw new Exception("Evento não encontrado.");
 		}
 	}
@@ -52,6 +52,14 @@ public class EventosService {
 	
 	public List<Evento> listarCapDecrescente(){
 		return eventosInter.findAll(Sort.by(Sort.Direction.DESC, "capacidade"));
+	}
+	
+	public List<Evento> listarDataCrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.ASC, "dataEvento"));
+	}
+	
+	public List<Evento> listarDataDecrescente(){
+		return eventosInter.findAll(Sort.by(Sort.Direction.DESC, "dataEvento"));
 	}
 	
 	public List<Evento> listarNomeCrescente(){

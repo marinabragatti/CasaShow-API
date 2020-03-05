@@ -23,6 +23,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.gft.model.Casa;
 import com.gft.service.CasasService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+@Api(tags = "Casas de Show")
 @RestController
 @RequestMapping("/api/casas")
 public class CasaResource {
@@ -30,11 +34,13 @@ public class CasaResource {
 	@Autowired
 	private CasasService casasService;
 	
+	@ApiOperation("Lista as casas de show")
 	@GetMapping
 	public ResponseEntity<List<Casa>> listar(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listar());
 	}
 	
+	@ApiOperation("Salva uma nova casa de show")
 	@PostMapping
 	public ResponseEntity<Void> salvar(@Valid @RequestBody Casa casa){
 		casa = casasService.salvar(casa);
@@ -42,6 +48,7 @@ public class CasaResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@ApiOperation("Busca uma casa de show pelo id")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscar(@PathVariable ("codigo") Long codigo) throws Exception{
 		Casa casa = casasService.buscar(codigo);
@@ -49,6 +56,7 @@ public class CasaResource {
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(casa);
 	}
 	
+	@ApiOperation("Atualiza uma casa de show pelo id")
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Void> atualizar(@RequestBody Casa casa, @PathVariable ("codigo") Long codigo) throws Exception{
 		casa.setCodigo(codigo);
@@ -56,24 +64,28 @@ public class CasaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Deleta uma casa de show pelo id")
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> delete(@PathVariable ("codigo") Long codigo) throws Exception{
 		casasService.deletar(codigo);
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation("Lista as casas de show em ordem crescente pelo nome")
 	@GetMapping("/asc")
 	public ResponseEntity<List<Casa>> listarCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarCrescente());
 	}
 	
+	@ApiOperation("Lista as casas de show em ordem decrescente pelo nome")
 	@GetMapping("/desc")
 	public ResponseEntity<List<Casa>> listarDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarDecrescente());
 	}
 	
+	@ApiOperation("Busca uma casa de show pelo nome")
 	@GetMapping("/nome/{nomeCasa}")
-	public ResponseEntity<Casa> pesquisa(@PathVariable ("nomeCasa") String nomeCasa){
+	public ResponseEntity<Casa> pesquisa(@PathVariable ("nomeCasa") String nomeCasa) throws Exception{
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.pesquisar(nomeCasa));
 	}
 }
