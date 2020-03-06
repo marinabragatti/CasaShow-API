@@ -25,23 +25,29 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Evento {
 
+	@ApiModelProperty(value = "ID do Evento", example = "1")
 	@JsonInclude(Include.NON_NULL)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
+	@ApiModelProperty(value = "Nome do Evento", example = "Show da Anitta")
 	@NotEmpty(message = "Nome do Evento inválido")
 	private String nomeEvento;
 	
+	@ApiModelProperty(value = "Capacidade de pessoas no evento", example = "100")
 	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Valores inválidos")
 	@NumberFormat(pattern = "#,##0")
 	@Min(value = 0L, message = "A capacidade deve ser positiva")
 	private int capacidade;
 	
+	@ApiModelProperty(value = "Data do Evento", example = "01/02/2020")
 	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Data inválida")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -49,17 +55,20 @@ public class Evento {
 	@Temporal(TemporalType.DATE)
 	private Date dataEvento;
 	
+	@ApiModelProperty(value = "Valor do ingresso", example = "10.99")
 	@JsonInclude(Include.NON_NULL)
 	@NotNull(message = "Valor do ingresso inválido")
 	@NumberFormat(pattern = "#,##0.00")
 	@DecimalMin(value = "0.01", message = "O valor não pode ser menor que R$0,01")
 	private BigDecimal valorIngresso;
 	
+	@ApiModelProperty(value = "Informações da Casa de Show", example = "1")
 	@JsonInclude(Include.NON_NULL)
 	@ManyToOne
 	@JoinColumn(name = "casa_show_codigo")
 	private Casa casaShow;
 	
+	@ApiModelProperty(value = "Gênero musical do Evento", example = "ROCK")
 	@Enumerated(EnumType.STRING)
 	private GeneroMusical genero;
 	

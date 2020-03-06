@@ -25,6 +25,7 @@ import com.gft.service.CasasService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Casas de Show")
 @RestController
@@ -34,58 +35,58 @@ public class CasaResource {
 	@Autowired
 	private CasasService casasService;
 	
-	@ApiOperation("Lista as casas de show")
+	@ApiOperation("Listar as casas de show")
 	@GetMapping
 	public ResponseEntity<List<Casa>> listar(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listar());
 	}
 	
-	@ApiOperation("Salva uma nova casa de show")
+	@ApiOperation("Salvar uma nova casa de show")
 	@PostMapping
-	public ResponseEntity<Void> salvar(@Valid @RequestBody Casa casa){
+	public ResponseEntity<Void> salvar(@ApiParam(value = "Dados de uma Casa de Show") @Valid @RequestBody Casa casa){
 		casa = casasService.salvar(casa);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{codigo}").buildAndExpand(casa.getCodigo()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@ApiOperation("Busca uma casa de show pelo id")
+	@ApiOperation("Buscar uma casa de show pelo id")
 	@GetMapping("/{codigo}")
-	public ResponseEntity<?> buscar(@PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<?> buscar(@ApiParam(value = "ID de uma Casa de Show", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		Casa casa = casasService.buscar(codigo);
 		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(casa);
 	}
 	
-	@ApiOperation("Atualiza uma casa de show pelo id")
+	@ApiOperation("Atualizar uma casa de show pelo id")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Void> atualizar(@RequestBody Casa casa, @PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<Void> atualizar(@ApiParam(value = "Dados de uma Casa de Show") @RequestBody Casa casa, @ApiParam(value = "ID de uma Casa de Show", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		casa.setCodigo(codigo);
 		casasService.atualizar(casa);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation("Deleta uma casa de show pelo id")
+	@ApiOperation("Deletar uma casa de show pelo id")
 	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Void> delete(@PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<Void> delete(@ApiParam(value = "ID de uma Casa de Show", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		casasService.deletar(codigo);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation("Lista as casas de show em ordem crescente pelo nome")
+	@ApiOperation("Listar as casas de show em ordem alfabética crescente")
 	@GetMapping("/asc")
 	public ResponseEntity<List<Casa>> listarCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarCrescente());
 	}
 	
-	@ApiOperation("Lista as casas de show em ordem decrescente pelo nome")
+	@ApiOperation("Listar as casas de show em ordem alfabética decrescente")
 	@GetMapping("/desc")
 	public ResponseEntity<List<Casa>> listarDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(casasService.listarDecrescente());
 	}
 	
-	@ApiOperation("Busca uma casa de show pelo nome")
+	@ApiOperation("Buscar uma casa de show pelo nome")
 	@GetMapping("/nome/{nomeCasa}")
-	public ResponseEntity<Casa> pesquisa(@PathVariable ("nomeCasa") String nomeCasa) throws Exception{
-		return ResponseEntity.status(HttpStatus.OK).body(casasService.pesquisar(nomeCasa));
+	public ResponseEntity<List<Casa>> pesquisa(@ApiParam(value = "Nome de uma Casa de Show", example = "Allianz Park") @PathVariable ("nomeCasa") String nomeCasa) throws Exception{
+		return ResponseEntity.status(HttpStatus.OK).body(casasService.pesquisar(null, nomeCasa));
 	}
 }

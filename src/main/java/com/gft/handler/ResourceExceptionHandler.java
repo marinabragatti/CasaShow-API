@@ -106,4 +106,16 @@ public class ResourceExceptionHandler {
 	}
 	
 	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<DetalhesErro> handleException(Exception e, HttpServletRequest request){
+	
+		DetalhesErro erro = new DetalhesErro();
+		erro.setStatus(404l);
+		erro.setTitulo("Item inexistente.");
+		erro.setMensagemDesenvolvedor("http://erros.casashow.com/404");
+		erro.setTimestamp(new SimpleDateFormat( "dd/MM/yyyy HH:mm" ).format(new Date(System.currentTimeMillis())));
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+	}
+	
 }

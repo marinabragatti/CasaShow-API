@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,28 +16,39 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Compra {
 
+	@ApiModelProperty(value = "ID da Compra", example = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 
+	@ApiModelProperty(value = "Informações do usuário")
 	@ManyToOne
 	private Usuario usuario;
 
+	@ApiModelProperty(value = "Nome do Evento", example = "Show da Anitta")
 	private String nomeEvento;
 
+	@ApiModelProperty(value = "Quantidade de ingressos comprados", example = "10")
 	private int quantidade;
 
+	@ApiModelProperty(value = "Data da compra", example = "01/02/2020")
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@Temporal(TemporalType.DATE)
 	private Date dataCompra;
 
-	private String formaPagto;
+	@ApiModelProperty(value = "Forma de Pagamento", example = "BOLETO")
+	@Enumerated(EnumType.STRING)
+	private FormaPagto formaPagto;
 
+	@ApiModelProperty(value = "Nome da Casa de Show", example = "Allianz Park")
 	private String casa;
 
+	@ApiModelProperty(value = "Valor total da compra", example = "100,50")
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valorTotal = BigDecimal.valueOf(0);;
 
@@ -79,11 +92,11 @@ public class Compra {
 		this.dataCompra = dataCompra;
 	}
 
-	public String getFormaPagto() {
+	public FormaPagto getFormaPagto() {
 		return formaPagto;
 	}
 
-	public void setFormaPagto(String formaPagto) {
+	public void setFormaPagto(FormaPagto formaPagto) {
 		this.formaPagto = formaPagto;
 	}
 

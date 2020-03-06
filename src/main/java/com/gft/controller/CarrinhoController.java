@@ -147,7 +147,7 @@ public class CarrinhoController {
 		mv.addObject("listaCarrinho", carrinhoCompra);
 		mv.addObject("compra", compra);
 				
-		compra.setFormaPagto(formaPagtos);
+		//compra.setFormaPagto(formaPagtos);
 		compra.setUsuario(usuario);		
 		compraInter.save(compra);
 		

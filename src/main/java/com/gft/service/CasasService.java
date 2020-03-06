@@ -54,12 +54,13 @@ public class CasasService {
 		return casaShowInter.findAll(Sort.by(Sort.Direction.DESC, "nomeCasa"));
 	}
 	
-	public Casa pesquisar(String nomeCasa) throws Exception{
-		try {
-			Casa casa = casaShowInter.findByNomeCasa(nomeCasa);
-			return casa;
-		} catch (IllegalArgumentException e){
+
+	public List<Casa> pesquisar(final List<Casa> list, String nomeCasa) throws Exception{
+		nomeCasa = nomeCasa.toLowerCase();
+		List <Casa> casa = casaShowInter.findByNomeCasa(nomeCasa);
+		if(casa.isEmpty()) {
 			throw new Exception("Casa não encontrada.");
-		}	
+		}
+		return casa;
 	}
 }

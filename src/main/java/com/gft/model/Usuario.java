@@ -12,14 +12,18 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames= {"username"}))
 public class Usuario {
 
+	@ApiModelProperty(value = "ID do usuário", example = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 		
+	@ApiModelProperty(value = "Nome do usuário", example = "João")
 	@NotEmpty(message = "Nome de Usuário inválido")
 	@Column(unique = true)
 	private String username;

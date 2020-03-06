@@ -25,6 +25,7 @@ import com.gft.service.EventosService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Eventos")
 @RestController
@@ -34,86 +35,86 @@ public class EventoResource {
 	@Autowired
 	private EventosService eventosService;
 	
-	@ApiOperation("Lista os eventos")
+	@ApiOperation("Listar os eventos")
 	@GetMapping
 	public ResponseEntity<List<Evento>> listar(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listar());
 	}
 	
-	@ApiOperation("Salva um novo evento")
+	@ApiOperation("Salvar um novo evento")
 	@PostMapping
-	public ResponseEntity<Void> salvar(@Valid @RequestBody Evento evento){
+	public ResponseEntity<Void> salvar(@ApiParam(value = "Dados de um Evento") @Valid @RequestBody Evento evento){
 		evento = eventosService.salvar(evento);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{codigo}").buildAndExpand(evento.getCodigo()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@ApiOperation("Busca um evento pelo id")
+	@ApiOperation("Buscar um evento pelo id")
 	@GetMapping("/{codigo}")
-	public ResponseEntity<?> buscar(@PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<?> buscar(@ApiParam(value = "ID de um Evento", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		Evento evento = eventosService.buscar(codigo);
 		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(evento);
 	}
 	
-	@ApiOperation("Atualiza um evento pelo id")
+	@ApiOperation("Atualizar um evento pelo id")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Void> atualizar(@RequestBody Evento evento, @PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<Void> atualizar(@ApiParam(value = "Dados de um Evento") @RequestBody Evento evento, @ApiParam(value = "ID de um Evento", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		evento.setCodigo(codigo);
 		eventosService.atualizar(evento);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation("Deleta um evento pelo id")
+	@ApiOperation("Deletar um evento pelo id")
 	@DeleteMapping("/{codigo}")
-	public ResponseEntity<Void> delete(@PathVariable Long codigo) throws Exception{
+	public ResponseEntity<Void> delete(@ApiParam(value = "ID de um Evento", example = "1") @PathVariable Long codigo) throws Exception{
 		eventosService.deletar(codigo);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@ApiOperation("Lista os eventos em ordem crescente de capacidade")
+	@ApiOperation("Listar os eventos em ordem crescente de capacidade")
 	@GetMapping("/capacidade/asc")
 	public ResponseEntity<List<Evento>> listarCapCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarCapCrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem decrescente de capacidade")
+	@ApiOperation("Listar os eventos em ordem decrescente de capacidade")
 	@GetMapping("/capacidade/desc")
 	public ResponseEntity<List<Evento>> listarCapDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarCapDecrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem crescente pela data do evento")
+	@ApiOperation("Listar os eventos em ordem crescente pela data do evento")
 	@GetMapping("/data/asc")
 	public ResponseEntity<List<Evento>> listarDataCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarDataCrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem decrescente pela data do evento")
+	@ApiOperation("Listar os eventos em ordem decrescente pela data do evento")
 	@GetMapping("/data/desc")
 	public ResponseEntity<List<Evento>> listarDataDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarDataDecrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem crescente pelo nome")
+	@ApiOperation("Listar os eventos em ordem alfabética crescente")
 	@GetMapping("/nome/asc")
 	public ResponseEntity<List<Evento>> listarNomeCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarNomeCrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem decrescente pelo nome")
+	@ApiOperation("Listar os eventos em ordem alfabética decrescente")
 	@GetMapping("/nome/desc")
 	public ResponseEntity<List<Evento>> listarNomeDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarNomeDecrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem crescente de preço")
+	@ApiOperation("Listar os eventos em ordem crescente de preço")
 	@GetMapping("/preco/asc")
 	public ResponseEntity<List<Evento>> listarValorCrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarValorCrescente());
 	}
 	
-	@ApiOperation("Lista os eventos em ordem decrescente de preço")
+	@ApiOperation("Listar os eventos em ordem decrescente de preço")
 	@GetMapping("/preco/desc")
 	public ResponseEntity<List<Evento>> listarValorDecrescente(){
 		return ResponseEntity.status(HttpStatus.OK).body(eventosService.listarValorDecrescente());

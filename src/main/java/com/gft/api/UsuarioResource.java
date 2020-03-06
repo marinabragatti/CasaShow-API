@@ -17,6 +17,7 @@ import com.gft.service.UsuarioService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Api(tags = "Usuários")
 @RestController
@@ -26,15 +27,15 @@ public class UsuarioResource {
 	@Autowired
 	private UsuarioService usuarioService;
 	
-	@ApiOperation("Lista os usuários")
+	@ApiOperation("Listar os usuários")
 	@GetMapping
 	public ResponseEntity<List<Usuario>> listar(){
 		return ResponseEntity.status(HttpStatus.OK).body(usuarioService.listar());
 	}
 	
-	@ApiOperation("Busca um usuário pelo id")
+	@ApiOperation("Buscar um usuário pelo id")
 	@GetMapping("/{codigo}")
-	public ResponseEntity<?> buscar(@PathVariable ("codigo") Long codigo) throws Exception{
+	public ResponseEntity<?> buscar(@ApiParam(value = "ID de um usuário", example = "1") @PathVariable ("codigo") Long codigo) throws Exception{
 		Usuario usuario = usuarioService.buscar(codigo);
 		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS);
 		return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(usuario);

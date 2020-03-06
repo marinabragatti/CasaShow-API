@@ -15,16 +15,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Casa {
 	
+	@ApiModelProperty(value = "ID da Casa de Show", example = "1")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 	
+	@ApiModelProperty(value = "Nome da Casa de Show", example = "Expo Barra Funda")
 	@NotEmpty(message = "Nome da Casa de Show inválido")
 	private String nomeCasa;
 	
+	@ApiModelProperty(value = "Endereço da Casa de Show", example = "Rua da Glória, 60")
 	@JsonInclude(Include.NON_NULL)
 	@NotEmpty(message = "Endereço da Casa de Show inválido")
 	private String endereco;

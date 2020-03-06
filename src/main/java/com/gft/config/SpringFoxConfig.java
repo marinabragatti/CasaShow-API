@@ -27,10 +27,10 @@ public class SpringFoxConfig implements WebMvcConfigurer{
 					.paths(PathSelectors.any())
 					.build()
 				.apiInfo(apiInfo())
-				.tags(new Tag ("Casas de Show", "Gerencia as Casas de Show"))
-				.tags(new Tag ("Eventos", "Gerencia os Eventos"))
-				.tags(new Tag ("Usuários", "Gerencia os Usuários"))
-				.tags(new Tag ("Vendas de Ingresso", "Gerencia as Vendas de Eventos"));
+				.tags(new Tag ("Casas de Show", "Gerenciar as Casas de Show"))
+				.tags(new Tag ("Eventos", "Gerenciar os Eventos"))
+				.tags(new Tag ("Usuários", "Gerenciar os Usuários"))
+				.tags(new Tag ("Vendas de Ingresso", "Gerenciar as Vendas de Eventos"));
 	}
 	
 	public ApiInfo apiInfo() {
